@@ -26,14 +26,24 @@ public class AppInitializer {
 //        }catch (ClassNotFoundException | SQLException e){
 //            e.printStackTrace();
 //        }
+//        try {
+//            List<Customer> customers = findAll();
+//            if (!customers.isEmpty()){
+//                System.out.println("Success!");
+//                for (Customer c:customers){
+//                    System.out.println(c.toString());
+//                }
+//
+//            }else {
+//                System.out.println("Try Again!");
+//            }
+//        }catch (ClassNotFoundException | SQLException e){
+//            e.printStackTrace();
+//        }
         try {
-            List<Customer> customers = findAll();
-            if (!customers.isEmpty()){
+            Customer customer = new Customer(1006, "Amith", "kandy", 1000000, "2026-12-12");
+            if (updateCustomer(customer)){
                 System.out.println("Success!");
-                for (Customer c:customers){
-                    System.out.println(c.toString());
-                }
-
             }else {
                 System.out.println("Try Again!");
             }
@@ -86,6 +96,18 @@ public class AppInitializer {
             statement.setDouble(4,c.getSalary());
             statement.setObject(5,c.getDob());
             return statement.executeUpdate()>0;
+    }
+    private static boolean updateCustomer(Customer c) throws ClassNotFoundException,SQLException{
+        //create a query
+        String sql = "UPDATE customer SET name=?, address = ?, salary=?, dob=? WHERE id=?";
+        //statement (Prepared statement)
+        PreparedStatement statement = getConnection().prepareStatement(sql);
+        statement.setString(1,c.getName());
+        statement.setString(2,c.getAddress());
+        statement.setDouble(3,c.getSalary());
+        statement.setObject(4,c.getDob());
+        statement.setLong(5,c.getId());
+        return statement.executeUpdate()>0;
     }
     private static Connection getConnection() throws ClassNotFoundException,SQLException{
         //Driver load
