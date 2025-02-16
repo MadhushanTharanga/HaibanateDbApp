@@ -1,12 +1,39 @@
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AppInitializer {
     public static void main(String[] args) {
+//        try {
+//            Customer customer = new Customer(1002, "kamal chandana", "Ratmalana", 95000, "2025-02-16");
+//            if (saveCustomer(customer)){
+//                System.out.println("Success!");
+//            }else {
+//                System.out.println("Try Again!");
+//            }
+//        }catch (ClassNotFoundException | SQLException e){
+//            e.printStackTrace();
+//        }
+//        try {
+//            Customer customer = findById(1003);
+//            if (customer!=null){
+//                System.out.println("Success!");
+//                System.out.println(customer.toString());
+//            }else {
+//                System.out.println("Try Again!");
+//            }
+//        }catch (ClassNotFoundException | SQLException e){
+//            e.printStackTrace();
+//        }
         try {
-            Customer customer = new Customer(1002, "kamal chandana", "Ratmalana", 95000, "2025-02-16");
-            if (saveCustomer(customer)){
+            List<Customer> customers = findAll();
+            if (!customers.isEmpty()){
                 System.out.println("Success!");
+                for (Customer c:customers){
+                    System.out.println(c.toString());
+                }
+
             }else {
                 System.out.println("Try Again!");
             }
@@ -29,6 +56,24 @@ public class AppInitializer {
             );
         }
         return null;
+    }
+    private static List<Customer> findAll() throws SQLException, ClassNotFoundException {
+        List<Customer> customerList = new ArrayList<>();
+        String sql = "SELECT * FROM customer";
+        PreparedStatement statement = getConnection().prepareStatement(sql);
+        ResultSet set = statement.executeQuery();
+        while (set.next()){
+            customerList.add(
+                    new Customer(
+                            set.getLong(1),
+                            set.getString(2),
+                            set.getString(3),
+                            set.getDouble(4),
+                            set.getString(5)
+                    )
+            );
+        }
+        return customerList;
     }
     private static boolean saveCustomer(Customer c) throws ClassNotFoundException,SQLException{
             //create a query

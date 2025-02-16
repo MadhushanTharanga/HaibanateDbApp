@@ -57,4 +57,15 @@ public class Customer {
     public void setDob(String dob) {
         this.dob = dob;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", salary=" + salary +
+                ", dob='" + dob + '\'' +
+                '}';
+    }
 }
